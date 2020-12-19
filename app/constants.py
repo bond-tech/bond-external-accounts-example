@@ -9,3 +9,5 @@ if exists('.env'):
 
 identity      = environ['IDENTITY'] 
 authorization = environ['AUTHORIZATION']
+
+bond_host = "https://api.bond.tech"
