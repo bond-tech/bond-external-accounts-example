@@ -9,7 +9,3 @@ if exists('.env'):
 
 identity      = environ['IDENTITY'] 
 authorization = environ['AUTHORIZATION']
-
-default_customer_id = "7ee10cfa-07c2-48ac-928d-5ab41a5e216f"
-
-

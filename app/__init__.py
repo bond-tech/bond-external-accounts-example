@@ -1,6 +1,9 @@
 from fastapi import FastAPI, Request, Response, Header, Depends, HTTPException
+from typing import Optional
 
 import requests
+
+from uuid import UUID
 
 from app.handlers  import *
 from app.payloads import *
@@ -27,9 +30,9 @@ async def get_default_token():
     raise HTTPException(detail="failed to create token", status_code=500)
 
 @app.get("/token/{customer_id}")
-async def get_customer_token(customer_id: str):
+async def get_customer_token(customer_id: UUID):
     url = "https://api.bond.tech/api/v0/auth/key/temporary"
-    data = {"customer_id":customer_id}
+    data = {"customer_id":str(customer_id)}
     head = {
         'Identity': identity , 
         'Authorization': authorization , 
@@ -40,13 +43,9 @@ async def get_customer_token(customer_id: str):
         return r.json()
     raise HTTPException(detail="failed to create token", status_code=500)
 
-@app.get("/{customer_id}/{card_id}")
-async def get_html_both(customer_id: str, card_id: str):
-    html = format_page(customer_id, card_id)
-    return Response(content=html)
-
-@app.get("/{card_id}")
-async def get_html_card(card_id: str):
-    html = format_page(default_customer_id, card_id)
-    return Response(content=html)
+@app.get("/{card}")
+async def get_html_card(card: UUID, customer: Optional[UUID] = None):
+    if customer is None: 
+        customer = card
+    return Response(content=format_page(customer, card))
 

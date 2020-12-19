@@ -6,7 +6,7 @@ authors = ["Bond Eng <engineering@bond.tech>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-uvicorn = "^0.12.2"
+uvicorn = {extras = ["standard"], version = "^0.12.0"}
 gunicorn = "^20.0.4"
 fastapi = "^0.61.2"
 python-dotenv = "^0.15.0"
