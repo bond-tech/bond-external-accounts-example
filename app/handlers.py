@@ -29,8 +29,10 @@ def card_view_page(customer, card):
   <main>
     <center>
     <div class="container">
+    <div class="field long">Bond Card Id:<div id="id" class="card-field display">{card}</div></div>
+    <br/><hr/><br/>
     <div class="field long">Card Number:<div id="num" class="card-field"></div></div>
-    <div class="field field-row">
+    <div class="field-row">
       <div class="field small">Expiration Date: <div id="exp" class="card-field"></div></div>
       <div class="field small">CVV2: <div id="cvv" class="card-field"></div></div>
     </div>
