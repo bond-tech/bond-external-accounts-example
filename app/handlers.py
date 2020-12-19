@@ -1,11 +1,13 @@
 
+import requests
+
 from app.constants import (
     identity , authorization , bond_host
 )
 
 def create_token(customer):
     url = "https://api.bond.tech/api/v0/auth/key/temporary"
-    data = {"customer_id":customer}
+    data = {"customer_id":str(customer)}
     head = {
         'Identity': identity , 
         'Authorization': authorization , 
@@ -20,24 +22,28 @@ def card_view_page(customer, card):
     return f"""<html>
 <head>
 <script type="text/javascript" src='https://cdn.bond.tech/sdk/cards/v1/bond-sdk-cards.js'></script>
+<link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
 
-<div class="field">
-  Card Number
-  <div id="num" class="card-field"></div>
-</div>
-<div class="field">
-  Expiration Date
-  <div id="exp" class="card-field"></div>
-</div>
-<div class="field">
-  CVV2
-  <div id="cvv" class="card-field"></div>
-</div>
+  <main>
+    <center>
+    <div class="container">
+    <div class="field">Card Number:<div id="num" class="card-field"></div></div>
+    <div class="field">Expiration Date: <div id="exp" class="card-field"></div></div>
+    <div class="field">CVV2: <div id="cvv" class="card-field"></div></div>
+    </div>
+    </center>
+  </main>
 
 <script>
 const cards = new BondCards({{ live: true }});
+
+const css = {{ 
+  fontFamily: 'Sans-Serif',
+  fontSize: '1.15em',
+  color: "rgb(96,107,243)" ,
+}};
 
 fetch( "/token/{customer}" )
   .then( response => response.json() )
@@ -50,6 +56,7 @@ fetch( "/token/{customer}" )
         authorization: data.Authorization,
         field: "number",
         htmlSelector: "#num",
+        css: css,
       }})
       .then((data) => {{ console.log("ok?"); }})
       .catch((error) => {{ console.log("error?"); }});
@@ -61,6 +68,7 @@ fetch( "/token/{customer}" )
         authorization: data.Authorization,
         field: "expiry",
         htmlSelector: "#exp",
+        css: css,
       }})
       .then((data) => {{ console.log("ok?"); }})
       .catch((error) => {{ console.log("error?"); }});
@@ -72,6 +80,7 @@ fetch( "/token/{customer}" )
         authorization: data.Authorization,
         field: "cvv",
         htmlSelector: "#cvv",
+        css: css,
       }})
       .then((data) => {{ console.log("ok?"); }})
       .catch((error) => {{ console.log("error?"); }});

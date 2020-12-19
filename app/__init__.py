@@ -4,6 +4,7 @@ import requests
 from uuid import UUID
 
 from fastapi import FastAPI, Request, Response, Header, Depends, HTTPException
+from fastapi.staticfiles import StaticFiles
 from typing import Optional
 
 from app.constants import (
@@ -39,6 +40,8 @@ async def health():
 
     # the one-time tokens will have permissions for the actual card routes
     # so we don't need to check those
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.get("/token/{customer}")
 async def get_customer_token(customer: UUID):
