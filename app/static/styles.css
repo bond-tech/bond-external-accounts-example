@@ -28,6 +28,9 @@ iframe {
 .small {
   width: 40%;
 }
+.footer-font {
+  font-size: 0.8em;
+}
 .field-row {
   width: 100%;
   display: flex;
@@ -49,4 +52,5 @@ iframe {
 .display {
   font-family: sans-serif;
   font-size: 1.15em;
+  color: #3e4169;
 }
