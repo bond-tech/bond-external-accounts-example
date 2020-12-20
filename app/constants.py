@@ -11,3 +11,6 @@ identity      = environ['IDENTITY']
 authorization = environ['AUTHORIZATION']
 
 bond_host = "https://api.bond.tech"
+
+sdk_docs = "https://docs.bond.tech/docs/retrieve-card-details-set-pins-and-reset-pins"
+api_docs = "https://docs.bond.tech/reference"

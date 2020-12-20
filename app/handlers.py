@@ -1,8 +1,10 @@
 
 import requests
 
+from fastapi import HTTPException
+
 from app.constants import (
-    identity , authorization , bond_host
+    identity , authorization , bond_host , sdk_docs , api_docs
 )
 
 def create_token(customer):
@@ -18,10 +20,11 @@ def create_token(customer):
         return r.json()
     raise HTTPException(status_code=500, detail="failed to create token")
 
-def card_view_page(customer, card):
+def card_view_page(customer, card, live=False):
     return f"""<html>
 <head>
 <script type="text/javascript" src='https://cdn.bond.tech/sdk/cards/v1/bond-sdk-cards.js'></script>
+<script src="https://kit.fontawesome.com/bf83d14d06.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -29,25 +32,87 @@ def card_view_page(customer, card):
   <main>
     <center>
     <div class="container">
-      <div class="field long">Bond Card Id:<div id="id" class="card-field display">{card}</div></div>
-      <br/><hr/><br/>
-      <div class="field long">Card Number:<div id="num" class="card-field"></div></div>
-      <div class="field-row">
-        <div class="field small">Expiration Date: <div id="exp" class="card-field"></div></div>
-        <div class="field small">CVV2: <div id="cvv" class="card-field"></div></div>
+
+      <div class="field width100">
+        Bond Card Id:
+        <div id="card-id" class="card-field display">{card}</div>
       </div>
-      <br/><br/><hr/>
-      <div class="field footer-font">
-        <a href="https://docs.bond.tech/docs/retrieve-card-details-set-pins-and-reset-pins" target="_blank" rel="noopener noreferrer">
+      <div class="field width100 footer-font">
+        <a href="{sdk_docs}" target="_blank" rel="noopener noreferrer">
           Bond Cards SDK documentation
         </a>
       </div>
+      <div class="field width100 footer-font">
+        <a href="{api_docs}" target="_blank" rel="noopener noreferrer">
+          Bond Studio API documentation
+        </a>
+      </div>
+
+      <br/><hr/><br/>
+
+      <div class="field width100">
+        Card Number:
+        <div id="num" class="card-field"></div>
+      </div>
+      <div class="field row">
+        <div class="field width40">
+          Expiration Date: 
+          <div id="exp" class="card-field"></div>
+        </div>
+        <div class="field width40">
+          CVV2: 
+          <div id="cvv" class="card-field"></div>
+        </div>
+      </div>
+
+      <br/><hr/>
+
+      <div class="field row">
+        <div class="field width30">
+          Current PIN: 
+          <div id="view-pin" class="card-field"></div>
+        </div>
+        <div class="field width30"></div>
+        <div class="field width20 icon">
+          <i class="fas fa-eye fa-2x"></i>
+        </div>
+      </div>
+
+      <br/><hr/>
+
+      <div class="field row">
+        <div class="field width30">
+          Current PIN: 
+          <div id="current-pin" class="card-field"></div>
+        </div>
+        <div class="field width30">
+          New PIN: 
+          <div id="new-pin" class="card-field"></div>
+        </div>
+        <div class="field width20 icon">
+            <i class="fas fa-arrow-circle-right fa-2x"></i>
+        </div>
+      </div>
+
+      <br/><hr/>
+
+      <div class="field row">
+        <div class="field width30">
+          Reset PIN: 
+          <div id="rest-pin" class="card-field"></div>
+        </div>
+        <div class="field width30"></div>
+        <div class="field width20 icon">
+            <i class="fas fa-arrow-circle-right fa-2x"></i>
+        </div>
+      </div>
+
     </div>
     </center>
   </main>
 
 <script>
-const cards = new BondCards({{ live: true }});
+const cards = new BondCards({{ live: {"true" if live else "false"} }});
 
 const css = {{ 
   fontFamily: 'Sans-Serif',
