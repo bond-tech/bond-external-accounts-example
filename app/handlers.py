@@ -4,16 +4,43 @@ from fastapi import HTTPException
 
 from app.constants import *
 
+def create_access_token(account_id, payload):
+  # return {"Hello" : "World"}
+  public_token = payload["public_token"]
+  metadata = payload["metadata"]
+  if account_id == "plaid":
+      url = f"https://sandbox.plaid.com/item/public_token/exchange"
+      headers = {
+      "Content-type": "application/json",
+      }
+      payload = {
+        "client_id": PLAID_CLIENT_ID,
+        "secret": PLAID_SECRET,
+        "public_token": public_token
+      }
+      r = requests.post(url=url, headers = headers, json=payload)
+      return r.json()
+  else:
+      # Bond
+      url = f"https://api.dev.bond.tech/api/v0/accounts/{account_id}/external_accounts/plaid"
+      headers = {
+          "Identity": identity,
+          "Authorization": authorization,
+          "Content-type": "application/json",
+      }
+      payload = {
+        "public_token": public_token,
+        "accounts": metadata.accounts,
+        "institution": metadata.institution,
+        "link_session_id": metadata.link_sess
+        
+        }
+      r = requests.post(url=url, headers = headers, json=payload)
+      return r.json()
 
 
 def create_link_token(account_id):
-    # Bond
-    # url = f"https://api.dev.bond.tech/api/v0/accounts/{account_id}/external_accounts/plaid"
-    # head = {
-    #     "Identity": identity,
-    #     "Authorization": authorization,
-    #     "Content-type": "application/json",
-    # }
+  if account_id == "plaid":
 
     url = f"https://sandbox.plaid.com/link/token/create"
     headers = {
@@ -36,65 +63,26 @@ def create_link_token(account_id):
     r = requests.post(url=url, headers = headers, json=payload)
     return r.json()
 
-    # 
-    # url = f"https://api.dev.bond.tech/api/v0/accounts/{account_id}/external_accounts/plaid"
-    # head = {
-    #     "Identity": identity,
-    #     "Authorization": authorization,
-    #     "Content-type": "application/json",
-    # }
-
-    # configs = {
-    #   'user': {
-    #       'client_user_id': '123-test-user-id',
-    #   },
-    #   'products': ['auth', 'transactions'],
-    #   'client_name': "Plaid Test App",
-    #   'country_codes': ['GB'],
-    #   'language': 'en',
-    #   'webhook': 'https://sample-webhook-uri.com',
-    #   'link_customization_name': 'default',
-    #   'account_filters': {
-    #       'depository': {
-    #           'account_subtypes': ['checking', 'savings'],
-    #       },
-    #   },
-    # }
-    # # create link token
-    # response = client.LinkToken.create(configs)
-    # link_token = response['link_token']
-    # return {
-    #     "link_token": "link-sandbox-740f6e76-20e1-4690-b730-6164da554542",
-    #     "expiration": "2021-01-27T23:29:06Z",
-    #     "linked_account_id": "1a130d45-3dc3-4c58-b0d8-9784aae0d009",
-    #     "status": "link initiated"
-    # }
-    # r = requests.get(url, headers=head)
-    # if r.status_code in [200, 201]:
-    #     return r.json()
-    # raise HTTPException(status_code=500, detail="failed to create linked token")
-
-def create_token(customer):
-    url = "https://sandbox.bond.tech/api/v0/auth/key/temporary"
-    data = {"customer_id": str(customer)}
-    head = {
-        "Identity": identity,
-        "Authorization": authorization,
-        "Content-type": "application/json",
-    }
-    r = requests.post(url, headers=head, json=data)
-    if r.status_code in [200, 201]:
-        return r.json()
-    raise HTTPException(status_code=500, detail="failed to create token")
+  else:
+      # Bond
+      url = f"https://api.dev.bond.tech/api/v0/accounts/{account_id}/external_accounts/plaid"
+      headers = {
+          "Identity": identity,
+          "Authorization": authorization,
+          "Content-type": "application/json",
+      }
+      
+      r = requests.get(url=url, headers = headers)
+      return r.json()
 
 
-
+# createLinkToken -> initializePlaidLink -> createAccessToken
 def plaid_bond_test(account_id):
   return f"""
   <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Plaid Quickstart Example</title>
+    <title>Plaid-Bond Quickstart Example</title>
     <link rel="stylesheet" href="https://threads.plaid.com/threads.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
@@ -106,10 +94,10 @@ def plaid_bond_test(account_id):
       <div class="grid">
         <div class="grid__column grid__column--is-twelve-columns">
           <div id="banner" class="everpresent-content">
-            <h1 class="everpresent-content__heading">Plaid Quickstart</h1>
+            <h1 class="everpresent-content__heading">Plaid-Bond Quickstart</h1>
             <p id="intro" class="everpresent-content__subheading">
               An example application that outlines an end-to-end integration
-              with Plaid
+              with Plaid and Bond
             </p>
           </div>
 
@@ -138,39 +126,83 @@ def plaid_bond_test(account_id):
       <script> 
 
       const new_elements= document.getElementById("display-plaid");
-      function createPlaid( linkToken ) {{
+
+      function initializePlaidLink( linkToken ) {{
             const handler = Plaid.create({{
               token: linkToken,
-              onSuccess: make_post_request,
+              onSuccess: createAccessToken,
               onLoad: () => {{ console.log( "load" ); handler.open(); }},
               onExit: (err, metadata) => {{ console.log( "exit" ); }},
               onEvent: (eventName, metadata) => {{ console.log( `event: ${{eventName}}` );}},
               receivedRedirectUri: null,
             }});
       }}
-      function make_post_request(public_token, metadata) {{
+
+        function createAccessToken(public_token, metadata) {{
         console.log(public_token);
+        console.log("metadata",metadata);
+        let resp = fetch( "/plaid/create_access_token/{account_id}", {{
+          method : "POST",
+          headers: {{
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          }},
+          body: JSON.stringify({{
+            "public_token": public_token, 
+            "metadata": metadata
+            }})
+        }}
+        )
+          .then(response=>response.json())
+          .then( data => {{
+          console.log(data);
+        }});
       }}
-      function make_get_request() {{
-          let resp = fetch( "/plaid/create_link_token")
+
+      function createLinkToken() {{
+          let resp = fetch( "/plaid/create_link_token/{account_id}")
             .then(response=>response.json())
             .then( data => {{
             console.log(data);
-            createPlaid(data.link_token);
+            initializePlaidLink(data.link_token);
           }});
-
       }}
       
       const elements = document.getElementById("link-btn");
-      elements.addEventListener('click', make_get_request, false);
+      elements.addEventListener('click', createLinkToken, false);
       </script>
       </html>
   """
 
-        # let resp = await fetch( "/accounts/{account_id}/create-link-token" );
 
-        # new_elements.innerHTML= resp
 
-# def plaid_bond_test(account_id):
+      # function createAccessToken(public_token, metadata) {{
+      #   console.log(public_token);
+      #   let resp = fetch( "/plaid/create_access_token/{account_id}/public_token")
+      #     .then(response=>response.json())
+      #     .then( data => {{
+      #     console.log(data);
+      #   }});
+      # }}
 
-# link-sandbox-f705d132-2475-4137-b935-6d320708ff62
+
+
+
+  #POST ACCESS TOKEN
+
+      #   function createAccessToken(public_token, metadata) {{
+      #   console.log(public_token);
+      #   let resp = fetch( "/plaid/create_access_token/{account_id}", {{
+      #     method : "POST",
+      #     headers: {{
+      #       "Accept": "application/json",
+      #       "Content-Type": "application/json"
+      #     }},
+      #     body: JSON.stringify({{"public_token": public_token}})
+      #   }}
+      #   )
+      #     .then(response=>response.json())
+      #     .then( data => {{
+      #     console.log(data);
+      #   }});
+      # }}
