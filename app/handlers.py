@@ -5,47 +5,58 @@ from fastapi import HTTPException
 from app.constants import *
 
 def create_access_token(account_id, payload):
-  # return {"Hello" : "World"}
   public_token = payload["public_token"]
   metadata = payload["metadata"]
+
   if account_id == "plaid":
-      url = f"https://sandbox.plaid.com/item/public_token/exchange"
+      endpoint = "/item/public_token/exchange"
+      url = plaid_host + endpoint
+
       headers = {
       "Content-type": "application/json",
       }
+
       payload = {
         "client_id": PLAID_CLIENT_ID,
         "secret": PLAID_SECRET,
         "public_token": public_token
       }
+
       r = requests.post(url=url, headers = headers, json=payload)
       return r.json()
+
   else:
       # Bond
-      url = f"https://api.dev.bond.tech/api/v0/accounts/{account_id}/external_accounts/plaid"
+      endpoint = f"/api/v0/accounts/{account_id}/external_accounts/plaid"
+      url = bond_host + endpoint
+
       headers = {
           "Identity": identity,
           "Authorization": authorization,
           "Content-type": "application/json",
       }
+
       payload = {
         "public_token": public_token,
-        "accounts": metadata.accounts,
-        "institution": metadata.institution,
-        "link_session_id": metadata.link_sess
-        
-        }
+        # "accounts": metadata.accounts,
+        # "institution": metadata.institution,
+        # "link_session_id": metadata.link_sess
+        "linked_account_id": account_id
+      }
+
       r = requests.post(url=url, headers = headers, json=payload)
       return r.json()
 
 
 def create_link_token(account_id):
   if account_id == "plaid":
+    endpoint = "/link/token/create"
+    url = plaid_host + endpoint
 
-    url = f"https://sandbox.plaid.com/link/token/create"
     headers = {
       "Content-type": "application/json",
     }
+
     payload = {
       "client_id": PLAID_CLIENT_ID,
       "secret": PLAID_SECRET,
@@ -60,12 +71,15 @@ def create_link_token(account_id):
         }
       }
     }
+
     r = requests.post(url=url, headers = headers, json=payload)
     return r.json()
 
   else:
       # Bond
-      url = f"https://api.dev.bond.tech/api/v0/accounts/{account_id}/external_accounts/plaid"
+      endpoint = f"/api/v0/accounts/{account_id}/external_accounts/plaid"
+      url = bond_host + endpoint
+
       headers = {
           "Identity": identity,
           "Authorization": authorization,
