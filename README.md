@@ -30,13 +30,13 @@ http://localhost:8001/docs
 ```
 
 The following environment variables are needed:
-
+```
 PLAID_CLIENT_ID
 PLAID_SECRET
 PLAID_PRODUCTS
 PLAID_COUNTRY_CODES
 PLAID_ENV
-
+```
 Contact @adityaatbond for these.
 
 # Discussion
