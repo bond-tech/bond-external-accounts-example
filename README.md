@@ -1,7 +1,7 @@
 
 Demo utilizing the Bond web SDK ([repo](https://github.com/bond-tech/bond-sdk-cards), [cdn](https://cdn.bond.tech/sdk/cards/v1/bond-sdk-cards.js)) for card presentment and PIN functionality. 
 
-Maintainer(s): @rossatbond. 
+Maintainer(s): @adityaatbond. 
 
 # Introduction
 
