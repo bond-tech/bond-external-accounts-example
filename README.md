@@ -29,6 +29,16 @@ The API documentation:
 http://localhost:8001/docs
 ```
 
+The following environment variables are needed:
+
+PLAID_CLIENT_ID
+PLAID_SECRET
+PLAID_PRODUCTS
+PLAID_COUNTRY_CODES
+PLAID_ENV
+
+Contact @adityaatbond for these.
+
 # Discussion
 
 The basic approach here is to serve `html` content that calls back to the server to get a one-time token used by in-browser `javascript`. This demonstrates that you can secure your credentials in your server infrastructure, and use those to generate and supply the temporary keys within content served to card holders. Of course, your content delivery may not itself be delivered by your service layer, maybe by a CDN. This is just a convenient construct in this demo. 
