@@ -24,22 +24,17 @@ http://localhost:8001/plaid/<account_id>
 ```
 where `account_id` is a valid Bond account ID. 
 
-Use plaid in instead of account_id to directly hit plaid's endpoints instead.
-```
-http://localhost:8001/plaid/plaid
-```
-
-The API documentation: 
-```
-http://localhost:8001/docs
-```
-
 Be sure to define your Bond API keys as environment variables:
 ```
 IDENTITY
 AUTHORIZATION
 ```
 
+Use plaid in instead of a Bond account_id to directly hit plaid's endpoints instead.
+
+```
+http://localhost:8001/plaid/plaid
+```
 The following environment variables are needed if using plaid's sandbox directly (Please see https://plaid.com/docs/quickstart/ and https://dashboard.plaid.com/overview/sandbox):
 ```
 PLAID_CLIENT_ID
@@ -47,6 +42,11 @@ PLAID_SECRET
 PLAID_PRODUCTS
 PLAID_COUNTRY_CODES
 PLAID_ENV
+```
+
+The API documentation: 
+```
+http://localhost:8001/docs
 ```
 
 Contact aditya@bond.tech for any questions.
