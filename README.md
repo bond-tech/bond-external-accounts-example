@@ -51,6 +51,9 @@ http://localhost:8001/docs
 
 Contact aditya@bond.tech for any questions.
 
+Please refer to the docs (https://docs.bond.tech/docs/link-external-accounts) for more details.
+
+
 # Discussion
 
 The basic approach here is to serve `html` content that calls back to the server to get a one-time token used by in-browser `javascript`. This demonstrates that you can secure your credentials in your server infrastructure, and use those to generate and supply the temporary keys within content served to card holders. Of course, your content delivery may not itself be delivered by your service layer, maybe by a CDN. This is just a convenient construct in this demo. 
