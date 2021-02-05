@@ -1,8 +1,6 @@
 
 Demo utilizing the Plaid SDK https://plaid.com/docs/link/web/#installation
 
-Mimics the Bond SDK card demo here: https://github.com/bond-tech/bond-sdk-card-demo
-
 Maintainer(s): aditya@bond.tech 
 
 # Introduction
