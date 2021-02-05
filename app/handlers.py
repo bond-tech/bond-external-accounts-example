@@ -5,9 +5,13 @@ from fastapi import HTTPException
 from app.constants import *
 
 def create_access_token(account_id, payload):
-  print("KSKDAKSDA", payload)
   public_token = payload["public_token"]
   metadata = payload["metadata"]
+  linked_account_id = payload['linked_account_id']
+  # change this once only 1 account is linked
+  verification_status = metadata["accounts"][0].get("verification_status", "instant_verified") 
+  external_account_id = metadata["accounts"][0]["id"]
+
 
   if account_id == "plaid":
       endpoint = "/item/public_token/exchange"
@@ -39,11 +43,16 @@ def create_access_token(account_id, payload):
 
       payload = {
         "public_token": public_token,
-        # "accounts": metadata.accounts,
-        # "institution": metadata.institution,
-        # "link_session_id": metadata.link_sess
-        "linked_account_id": payload['linked_account_id']
+        "linked_account_id": linked_account_id,
+        "external_account_id": external_account_id,
+        "status": verification_status
       }
+      # payload = {
+      #   "public_token": "public-sandbox-98ed91d9-7794-49e2-a397-279734e597ae",
+      #   "linked_account_id": "f897b0ac-f5aa-4802-ae1d-fd6b32f0ade9",
+      #   "external_account_id": "nZyRwRlwo9CnjpGxjb4qcRMgmaePPBF8ZJgD3",
+      #   "status": "pending_automatic_verification"
+      # }
 
       r = requests.post(url=url, headers = headers, json=payload)
       return r.json()
@@ -146,7 +155,7 @@ def plaid_bond_test(account_id):
         const handler = Plaid.create({{
           token: data.link_token,
           onSuccess: (public_token, metadata) => createAccessToken(public_token, metadata, data),
-          onLoad: () => {{ handler.open(); }},
+          onLoad: () => {{ console.log( "load" ); handler.open(); }},
           onExit: (err, metadata) => {{ console.log( "exit" ); }},
           onEvent: (eventName, metadata) => {{ console.log( `event: ${{eventName}}` );}},
           receivedRedirectUri: null,
@@ -189,43 +198,3 @@ def plaid_bond_test(account_id):
       </script>
       </html>
   """
-
-        # var payload = {
-        #     "public_token": public_token, 
-        #     "metadata": metadata,
-        #     "linked_account_id": data.linked_account_id
-        # };
-
-        # var data = new FormData();
-        # data.append( "json", JSON.stringify( payload ) );
-
-      # function createAccessToken(public_token, metadata) {{
-      #   console.log(public_token);
-      #   let resp = fetch( "/plaid/create_access_token/{account_id}/public_token")
-      #     .then(response=>response.json())
-      #     .then( data => {{
-      #     console.log(data);
-      #   }});
-      # }}
-
-
-
-
-  #POST ACCESS TOKEN
-
-      #   function createAccessToken(public_token, metadata) {{
-      #   console.log(public_token);
-      #   let resp = fetch( "/plaid/create_access_token/{account_id}", {{
-      #     method : "POST",
-      #     headers: {{
-      #       "Accept": "application/json",
-      #       "Content-Type": "application/json"
-      #     }},
-      #     body: JSON.stringify({{"public_token": public_token}})
-      #   }}
-      #   )
-      #     .then(response=>response.json())
-      #     .then( data => {{
-      #     console.log(data);
-      #   }});
-      # }}

@@ -6,10 +6,10 @@ from dotenv import load_dotenv
 if exists(".env"):
     load_dotenv()
 
-identity = environ.get("IDENTITY","2c22f625-0f11-473d-b583-27e1d1a5770c")
-authorization = environ.get("AUTHORIZATION","JPJoe2metlnKbrlXaLK555PSQPHwY/o1fc1FIhAvt56xg7ozzFnv8l+2Cas5yXGe")
+identity = environ.get("IDENTITY","1caabeb8-e8f4-455f-9c5c-ab13b3cef444")
+authorization = environ.get("AUTHORIZATION","GjJNKTV06JtgOT2HDUKOyNwVQJj1XWiJ6nRYNedW6e41qA1KmjPT4ZCp26vyJvSE")
 
-bond_host = "https://sandbox.dev.bond.tech"
+bond_host = "https://sandbox.bond.tech"
 plaid_host = "https://sandbox.plaid.com"
 
 api_docs = "https://docs.bond.tech/reference"
