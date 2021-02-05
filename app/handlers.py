@@ -8,11 +8,10 @@ def create_access_token(account_id, payload):
   public_token = payload["public_token"]
   metadata = payload["metadata"]
   linked_account_id = payload['linked_account_id']
-  # change this once only 1 account is linked
-  verification_status = metadata["accounts"][0].get("verification_status", "instant_verified") 
-  external_account_id = metadata["accounts"][0]["id"]
 
-  print(external_account_id)
+  # change this once only 1 account is linked
+  verification_status = metadata["account"].get("verification_status", "instant_verified") 
+  external_account_id = metadata["account"]["id"]
 
   if account_id == "plaid":
       endpoint = "/item/public_token/exchange"
@@ -48,12 +47,6 @@ def create_access_token(account_id, payload):
         "external_account_id": external_account_id,
         "status": verification_status
       }
-      # payload = {
-      #   "public_token": "public-sandbox-98ed91d9-7794-49e2-a397-279734e597ae",
-      #   "linked_account_id": "f897b0ac-f5aa-4802-ae1d-fd6b32f0ade9",
-      #   "external_account_id": "nZyRwRlwo9CnjpGxjb4qcRMgmaePPBF8ZJgD3",
-      #   "status": "pending_automatic_verification"
-      # }
 
       r = requests.post(url=url, headers = headers, json=payload)
       return r.json()
@@ -166,6 +159,8 @@ def plaid_bond_test(account_id):
       function createAccessToken(public_token, metadata, data) {{
         console.log("Successfully initialized plaid link object");
         console.log("Exchanging", public_token, "to get an access_token");
+        console.log("External account_id", metadata.account.id);
+        
         let resp = fetch( "/plaid/create_access_token/{account_id}", {{
           method : "POST",
           headers: {{
