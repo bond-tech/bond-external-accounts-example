@@ -49,7 +49,7 @@ http://localhost:8001/docs
 
 Contact aditya@bond.tech for any questions.
 
-Please refer to the docs (https://docs.bond.tech/docs/link-external-accounts) for more details.
+Please refer to the docs (https://docs.bond.tech/docs/link-external-accounts) for more details. Also check the web browser console log for other details about the linking process.
 
 
 # Discussion
