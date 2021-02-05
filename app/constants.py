@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 if exists(".env"):
     load_dotenv()
 
-identity = environ.get("IDENTITY","f2ced16a-463a-48e9-931d-25120809041f")
-authorization = environ.get("AUTHORIZATION","gsPjke9IgM2SfvrTzExLilVtK2b6Qigmgb5YMsfgBn0LWo6PhL09I4AX3uAYy4Wc")
+identity = environ.get("IDENTITY","2c22f625-0f11-473d-b583-27e1d1a5770c")
+authorization = environ.get("AUTHORIZATION","JPJoe2metlnKbrlXaLK555PSQPHwY/o1fc1FIhAvt56xg7ozzFnv8l+2Cas5yXGe")
 
-bond_host = "https://sandbox.bond.tech"
+bond_host = "https://sandbox.dev.bond.tech"
+plaid_host = "https://sandbox.plaid.com"
 
-sdk_docs = "https://docs.bond.tech/docs/retrieve-card-details-set-pins-and-reset-pins"
 api_docs = "https://docs.bond.tech/reference"
 
 PLAID_CLIENT_ID=environ.get("PLAID_CLIENT_ID","5f91a184df1def00129064d3")
