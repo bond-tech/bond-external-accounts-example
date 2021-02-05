@@ -12,6 +12,7 @@ def create_access_token(account_id, payload):
   verification_status = metadata["accounts"][0].get("verification_status", "instant_verified") 
   external_account_id = metadata["accounts"][0]["id"]
 
+  print(external_account_id)
 
   if account_id == "plaid":
       endpoint = "/item/public_token/exchange"
