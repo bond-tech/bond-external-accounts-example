@@ -24,6 +24,11 @@ http://localhost:8001/plaid/<account_id>
 ```
 where `account_id` is a valid Bond account ID. 
 
+Use plaid in instead of account_id to directly hit plaid's endpoints instead.
+```
+http://localhost:8001/plaid/plaid
+```
+
 The API documentation: 
 ```
 http://localhost:8001/docs
