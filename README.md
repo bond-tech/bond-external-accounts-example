@@ -29,7 +29,13 @@ The API documentation:
 http://localhost:8001/docs
 ```
 
-The following environment variables are needed:
+Be sure to define your Bond API keys as environment variables:
+```
+IDENTITY
+AUTHORIZATION
+```
+
+The following environment variables are needed if using plaid's sandbox directly (Please see https://plaid.com/docs/quickstart/ and https://dashboard.plaid.com/overview/sandbox):
 ```
 PLAID_CLIENT_ID
 PLAID_SECRET
@@ -37,7 +43,8 @@ PLAID_PRODUCTS
 PLAID_COUNTRY_CODES
 PLAID_ENV
 ```
-Contact @adityaatbond for these.
+
+Contact aditya@bond.tech for any questions.
 
 # Discussion
 
