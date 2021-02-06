@@ -7,7 +7,7 @@ from app.constants import *
 def create_access_token(account_id, payload):
   public_token = payload["public_token"]
   metadata = payload["metadata"]
-  linked_account_id = payload['linked_account_id']
+  linked_account_id = payload.get('linked_account_id')
 
   # change this once only 1 account is linked
   verification_status = metadata["account"].get("verification_status", "instant_verified") 
@@ -160,7 +160,8 @@ def plaid_bond_test(account_id):
         console.log("Successfully initialized plaid link object");
         console.log("Exchanging", public_token, "to get an access_token");
         console.log("External account_id", metadata.account.id);
-        
+        console.log("Linked account_id", data.linked_account_id);
+
         let resp = fetch( "/plaid/create_access_token/{account_id}", {{
           method : "POST",
           headers: {{
