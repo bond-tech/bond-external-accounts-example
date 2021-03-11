@@ -12,7 +12,10 @@ def create_access_token(account_id, payload):
   # change this once only 1 account is linked
   verification_status = metadata["account"].get("verification_status", "instant_verified") 
   external_account_id = metadata["account"]["id"]
-
+  
+  if not verification_status:
+    verification_status = "linked"
+    
   if account_id == "plaid":
       endpoint = "/item/public_token/exchange"
       url = plaid_host + endpoint
