@@ -77,15 +77,15 @@ async def get_html(account_id):
     """
     return Response(content=plaid_bond_test(account_id))
 
-@app.get("/plaid/{account_id}/{linked_account_id}")
-async def get_html_manual_microdeposit(account_id, linked_account_id):
+@app.get("/plaid/{account_id}/{external_account_id}")
+async def get_html_manual_microdeposit(account_id, external_account_id):
     """
     Gets a HTML page which verifies the microdeposits to an account
 
     Use "plaid"  as the account_id to call plaid's API directly,
     submit a valid account_id instead to use Bond's API.
     """
-    return Response(content=plaid_bond_micro_deposit_test(account_id, linked_account_id))
+    return Response(content=plaid_bond_micro_deposit_test(account_id, external_account_id))
 
 @app.post("/plaid/create_access_token/{account_id}")
 def post_access_token(account_id, data:dict):

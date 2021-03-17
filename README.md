@@ -1,8 +1,6 @@
 
 Demo utilizing the Plaid SDK https://plaid.com/docs/link/web/#installation
 
-Mimics the Bond SDK card demo here: https://github.com/bond-tech/bond-sdk-card-demo
-
 Maintainer(s): aditya@bond.tech 
 
 # Introduction
@@ -50,6 +48,9 @@ http://localhost:8001/docs
 ```
 
 Contact aditya@bond.tech for any questions.
+
+Please refer to the docs (https://docs.bond.tech/docs/link-external-accounts) for more details. Also check the web browser console log for other details about the linking process.
+
 
 # Discussion
 
