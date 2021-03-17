@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from typing import Optional
 
 from app.constants import identity, authorization, bond_host
-from app.handlers import plaid_bond_test, create_link_token, create_access_token
+from app.handlers import plaid_bond_test, create_link_token, create_access_token, plaid_bond_micro_deposit_test, update_link_token
 
 app = FastAPI()
 
@@ -53,6 +53,17 @@ def get_link_token(account_id):
     """
     return create_link_token(account_id)
 
+@app.patch("/plaid/update_link_token/{account_id}")
+def patch_link_token(account_id, data:dict):
+    """    
+    Gets a link token.
+
+    Use "plaid"  as the account_id to call plaid's API "link/token/create" directly,
+    submit a valid account_id instead to use Bond's API.
+    """
+    return update_link_token(account_id, data)
+
+
 @app.get("/plaid/{account_id}")
 async def get_html(account_id):
     """
@@ -65,6 +76,16 @@ async def get_html(account_id):
     submit a valid account_id instead to use Bond's API.
     """
     return Response(content=plaid_bond_test(account_id))
+
+@app.get("/plaid/{account_id}/{external_account_id}")
+async def get_html_manual_microdeposit(account_id, external_account_id):
+    """
+    Gets a HTML page which verifies the microdeposits to an account
+
+    Use "plaid"  as the account_id to call plaid's API directly,
+    submit a valid account_id instead to use Bond's API.
+    """
+    return Response(content=plaid_bond_micro_deposit_test(account_id, external_account_id))
 
 @app.post("/plaid/create_access_token/{account_id}")
 def post_access_token(account_id, data:dict):
