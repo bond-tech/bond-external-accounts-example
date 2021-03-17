@@ -49,6 +49,12 @@ PLAID_PRODUCTS
 PLAID_COUNTRY_CODES
 PLAID_ENV
 ```
+### Initiate manual microdeposit verification flow
+To initiate the microdeposit flow, use a username and password 
+other than `user_good` and `pass_good` durng the account linking process.
+You'll be prompted to "Link with account numbers".
+Follow the steps in the plaid flow and enter the following values
+routing number: 110000000 | account number: 1111222233330000 when prompted.
 
 ### Verify microdeposits
 Open a browser to 
@@ -57,6 +63,10 @@ http://localhost:8001/plaid/<account_id>/<external_account_id>
 ```
 where `account_id` is a valid Bond account ID and `external_account_id` is the linked external account_id 
 which is obtained by the link account step (check console to get the external_account_id).
+
+In the sandbox environment, a confirming the values of $0.01 and $0.02 a the two microdeposits would 
+successfully verify the microdeposit flow. Any other values for the microdeposits would fail to verify
+the linked external account.
 
 Be sure to define your Bond API keys as environment variables:
 ```
