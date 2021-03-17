@@ -16,7 +16,11 @@ To run locally, clone the repo and run
 poetry install && poetry update
 poetry run uvicorn app:app --port=8001 --reload
 ```
-(Leave off `--reload` if you don't want code changes to spark server reloads.)  Open a browser to 
+(Leave off `--reload` if you don't want code changes to spark server reloads.)  
+
+### Link account:
+
+Open a browser to 
 ```
 http://localhost:8001/plaid/<account_id>
 ```
@@ -33,6 +37,7 @@ Use plaid in instead of a Bond account_id to directly hit plaid's endpoints inst
 ```
 http://localhost:8001/plaid/plaid
 ```
+
 The following environment variables are needed if using plaid's sandbox directly (Please see https://plaid.com/docs/quickstart/ and https://dashboard.plaid.com/overview/sandbox):
 ```
 PLAID_CLIENT_ID
@@ -40,6 +45,21 @@ PLAID_SECRET
 PLAID_PRODUCTS
 PLAID_COUNTRY_CODES
 PLAID_ENV
+```
+This process links the Bond account (`account_id`) to an external bank account (`external_account_id`).
+
+### Verify microdeposits
+Open a browser to 
+```
+http://localhost:8001/plaid/<account_id>/<external_account_id>
+```
+where `account_id` is a valid Bond account ID and `external_account_id` is the linked external account_id 
+which is obtained by the link account step (check console to get the external_account_id).
+
+Be sure to define your Bond API keys as environment variables:
+```
+IDENTITY
+AUTHORIZATION
 ```
 
 The API documentation: 
