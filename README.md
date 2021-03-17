@@ -32,6 +32,9 @@ IDENTITY
 AUTHORIZATION
 ```
 
+This process links a Bond account (`account_id`) to an external bank account (`external_account_id`).
+
+
 Use plaid in instead of a Bond account_id to directly hit plaid's endpoints instead.
 
 ```
@@ -46,7 +49,6 @@ PLAID_PRODUCTS
 PLAID_COUNTRY_CODES
 PLAID_ENV
 ```
-This process links the Bond account (`account_id`) to an external bank account (`external_account_id`).
 
 ### Verify microdeposits
 Open a browser to 
