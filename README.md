@@ -51,10 +51,12 @@ PLAID_ENV
 ```
 ### Initiate manual microdeposit verification flow
 To initiate the microdeposit flow, use a username and password 
-other than `user_good` and `pass_good` durng the account linking process.
+other than `user_good` and `pass_good` during the account linking process.
 You'll be prompted to "Link with account numbers".
 Follow the steps in the plaid flow and enter the following values
 routing number: 110000000 | account number: 1111222233330000 when prompted.
+
+Notice in the console that the account verification_status is set to `pending_manual_verification`.
 
 ### Verify microdeposits
 Open a browser to 
