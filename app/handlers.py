@@ -130,7 +130,7 @@ def update_link_token(account_id, payload):
           "Authorization": authorization,
           "Content-type": "application/json",
       }
-      
+
       r = requests.patch(url=url, headers = headers, json=payload)
       return r.json()
 
@@ -242,7 +242,7 @@ def plaid_bond_test(account_id):
 
 
 # updateLinkToken
-def plaid_bond_micro_deposit_test(account_id, external_account_id):
+def plaid_bond_micro_deposit_test(account_id, linked_account_id):
   return f"""
   <html lang="en">
   <head>
@@ -262,19 +262,13 @@ def plaid_bond_micro_deposit_test(account_id, external_account_id):
             <h1 class="everpresent-content__heading">Plaid-Bond Quickstart</h1>
             <p id="intro" class="everpresent-content__subheading">
               An example application that outlines an end-to-end integration
-              with Plaid and Bond
+              with Plaid and Bond.
             </p>
           </div>
-
           <div id="container" class="initial-view">
             <p class="initial-view__description">
-              Click the button below to intiate the manual microdeposit flow. After you
-              select one, you’ll be guided through an authentication process. If
-              using the default Sandbox environment, use username
-              <strong>user_good</strong> and password
-              <strong>pass_good</strong>. Upon completion, a
-              <code>public_token</code> will be passed back to the server and
-              exchanged for <code>access_token</code>.
+              Click the button below to verify the microdeposits. A value of 0.01
+              and 0.02 as deposits will change the account status to <strong>manually_verified </strong>.
             </p>
 
             <button id="update-link-btn" class="button button--is-primary">
@@ -298,24 +292,22 @@ def plaid_bond_micro_deposit_test(account_id, external_account_id):
             "Content-Type": "application/json"
           }},
           body: JSON.stringify({{
-            "external_account_id": "{external_account_id}"
+            "linked_account_id": "{linked_account_id}"
             }})
         }}
         )
           .then(response=>response.json())
           .then( data => {{
-          console.log(data);
-
-        const handler = Plaid.create({{
-          env: 'sandbox',
-          token: data.link_token,
-          onSuccess: (public_token, metadata) => {{console.log(metadata); }},
-          onLoad: () => {{ console.log( "load" ); }},
-          onExit: (err, metadata) => {{ console.log( "exit" ); }},
-          onEvent: (eventName, metadata) => {{ console.log( `event: ${{eventName}}` );}},
-          receivedRedirectUri: null,
-        }});
-        handler.open();
+          console.log("HOMER", data);
+          const handler = Plaid.create({{
+            env: 'sandbox',
+            token: data.link_token,
+            onSuccess: (public_token, metadata) => {{console.log(metadata); }},
+            onLoad: () => {{ console.log( "load" ); handler.open();}},
+            onExit: (err, metadata) => {{ console.log( "exit" ); }},
+            onEvent: (eventName, metadata) => {{ console.log( `event: ${{eventName}}` );}},
+            receivedRedirectUri: null,
+          }});
         }});
 
       }}
