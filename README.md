@@ -32,7 +32,7 @@ IDENTITY
 AUTHORIZATION
 ```
 
-This process links a Bond account (`account_id`) to an external bank account (`external_account_id`).
+This process links a Bond account (`account_id`) to an external bank account (`linked_account_id`).
 
 
 Use plaid in instead of a Bond account_id to directly hit plaid's endpoints instead.
@@ -61,10 +61,10 @@ Notice in the console that the account verification_status is set to `pending_ma
 ### Verify microdeposits
 Open a browser to 
 ```
-http://localhost:8001/plaid/<account_id>/<external_account_id>
+http://localhost:8001/plaid/<account_id>/<linked_account_id>
 ```
-where `account_id` is a valid Bond account ID and `external_account_id` is the linked external account_id 
-which is obtained by the link account step (check console to get the external_account_id).
+where `account_id` is a valid Bond account ID and `linked_account_id` is the linked external account_id 
+which is obtained by the link account step (check console to get the linked_account_id).
 
 In the sandbox environment, a confirming the values of $0.01 and $0.02 a the two microdeposits would 
 successfully verify the microdeposit flow. Any other values for the microdeposits would fail to verify
