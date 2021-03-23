@@ -49,7 +49,7 @@ PLAID_PRODUCTS
 PLAID_COUNTRY_CODES
 PLAID_ENV
 ```
-### Initiate manual microdeposit verification flow
+### Initiate manual microdeposit verification flow (same-day micro deposit flow)
 To initiate the microdeposit flow, use a username and password 
 other than `user_good` and `pass_good` during the account linking process.
 You'll be prompted to "Link with account numbers".
@@ -69,6 +69,8 @@ which is obtained by the link account step (check console to get the linked_acco
 In the sandbox environment, a confirming the values of $0.01 and $0.02 a the two microdeposits would 
 successfully verify the microdeposit flow. Any other values for the microdeposits would fail to verify
 the linked external account.
+
+### Other information
 
 Be sure to define your Bond API keys as environment variables:
 ```
