@@ -18,7 +18,7 @@ poetry run uvicorn app:app --port=8001 --reload
 ```
 (Leave off `--reload` if you don't want code changes to spark server reloads.)  
 
-### Link account:
+### Link an external account:
 
 Open a browser to 
 ```
