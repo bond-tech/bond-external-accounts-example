@@ -72,12 +72,6 @@ def create_link_token(account_id):
       "products": ["auth"],
       "country_codes": ["US"],
       "language": "en",
-      # "account_filters": {
-      #   "depository": {
-      #       "account_subtypes": ["checking"]
-      #   }
-      # }
-      "webhook": 'https://your_app_url.com/webhook'
     }
 
     r = requests.post(url=url, headers = headers, json=payload)
