@@ -72,11 +72,12 @@ def create_link_token(account_id):
       "products": ["auth"],
       "country_codes": ["US"],
       "language": "en",
-      "account_filters": {
-        "depository": {
-            "account_subtypes": ["checking"]
-        }
-      }
+      # "account_filters": {
+      #   "depository": {
+      #       "account_subtypes": ["checking"]
+      #   }
+      # }
+      "webhook": 'https://your_app_url.com/webhook'
     }
 
     r = requests.post(url=url, headers = headers, json=payload)
@@ -136,7 +137,7 @@ def update_link_token(account_id, payload):
 
 
 # createLinkToken -> initializePlaidLink -> createAccessToken
-def plaid_bond_test(account_id):
+def plaid_bond_test(account_id, PLAID_ENV):
   return f"""
   <html lang="en">
   <head>
@@ -188,7 +189,7 @@ def plaid_bond_test(account_id):
 
       function initializePlaidLink( data ) {{
         const handler = Plaid.create({{
-          env: 'sandbox',
+          env: {PLAID_ENV},
           token: data.link_token,
           onSuccess: (public_token, metadata) => createAccessToken(public_token, metadata, data),
           onLoad: () => {{ console.log( "load" ); handler.open(); }},
@@ -300,7 +301,7 @@ def plaid_bond_micro_deposit_test(account_id, linked_account_id):
           .then( data => {{
           console.log("HOMER", data);
           const handler = Plaid.create({{
-            env: 'sandbox',
+            env: {PLAID_ENV},
             token: data.link_token,
             onSuccess: (public_token, metadata) => {{console.log(metadata); }},
             onLoad: () => {{ console.log( "load" ); handler.open();}},
