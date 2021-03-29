@@ -9,8 +9,15 @@ if exists(".env"):
 identity = environ.get("IDENTITY", None)
 authorization = environ.get("AUTHORIZATION", None)
 
-bond_host = "https://sandbox.bond.tech"
-plaid_host = "https://sandbox.plaid.com"
+# can be production, sandbox
+PLAID_ENV = environ.get("PLAID_ENV","sandbox")
+
+# can be sandbox.dev, api.dev, sandbox(prod), api(prod), 
+# api.staging, sandbox.staging.
+BOND_ENV = environ.get("BOND_ENV","sandbox")
+
+plaid_host = f"https://{PLAID_ENV}.plaid.com"
+bond_host = f"https://{BOND_ENV}.dev.bond.tech"
 
 api_docs = "https://docs.bond.tech/reference"
 
