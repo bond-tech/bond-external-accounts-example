@@ -52,6 +52,7 @@ def create_access_token(account_id, payload):
             "linked_account_id": linked_account_id,
             "external_account_id": external_account_id,
             "status": verification_status,
+            "bank_name": metadata.get("institution").get("name", "None"),
         }
 
         r = requests.post(url=url, headers=headers, json=payload)
@@ -202,6 +203,7 @@ def plaid_bond_test(account_id):
         console.log("Exchanging", public_token, "to get an access_token");
         console.log("External account_id", metadata.account.id);
         console.log("Linked account_id", data.linked_account_id);
+        console.log("Metadata", metadata);
 
         let resp = fetch( "/plaid/create_access_token/{account_id}", {{
           method : "POST",
