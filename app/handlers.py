@@ -11,7 +11,8 @@ def create_access_token(account_id, payload):
     linked_account_id = payload.get("linked_account_id")
 
     # change this once only 1 account is linked
-    verification_status = metadata["account"].get("verification_status") or "instantly_verified"
+    verification_status = (
+        metadata["account"].get("verification_status") or "instantly_verified"
     )
     external_account_id = metadata["account"]["id"]
 
