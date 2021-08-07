@@ -38,7 +38,7 @@ def create_access_token(account_id, payload):
 
     else:
         # Bond
-        endpoint = f"/api/v0/accounts/{account_id}/external_accounts/plaid"
+        endpoint = f"/api/v0/accounts/{linked_account_id}"
         url = bond_host + endpoint
 
         headers = {
@@ -49,9 +49,8 @@ def create_access_token(account_id, payload):
 
         payload = {
             "public_token": public_token,
-            "linked_account_id": linked_account_id,
             "external_account_id": external_account_id,
-            "status": verification_status,
+            "verification_status": verification_status,
             "bank_name": metadata.get("institution").get("name", "None"),
         }
 
@@ -84,7 +83,7 @@ def create_link_token(account_id):
 
     else:
         # Bond
-        endpoint = f"/api/v0/accounts/{account_id}/external_accounts/plaid"
+        endpoint = f"/api/v0/accounts"
         url = bond_host + endpoint
 
         headers = {
@@ -93,7 +92,13 @@ def create_link_token(account_id):
             "Content-type": "application/json",
         }
 
-        r = requests.get(url=url, headers=headers)
+        payload = {
+            "link_type": "plaid",
+            "type": "external",
+            "customer_id": account_id, # poorly named but this is customer_id
+        }
+
+        r = requests.post(url=url, headers=headers, json=payload)
         return r.json()
 
 
@@ -122,13 +127,16 @@ def update_link_token(account_id, payload):
 
     else:
         # Bond
-        endpoint = f"/api/v0/accounts/{account_id}/external_accounts/plaid"
+        endpoint = f"/api/v0/accounts/{payload.get('link_token')}"
         url = bond_host + endpoint
 
         headers = {
             "Identity": identity,
             "Authorization": authorization,
             "Content-type": "application/json",
+        }
+        payload = {
+            "new_link_token": True
         }
 
         r = requests.patch(url=url, headers=headers, json=payload)

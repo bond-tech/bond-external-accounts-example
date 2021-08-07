@@ -14,7 +14,7 @@ PLAID_ENV = environ.get("PLAID_ENV", "sandbox")
 
 # can be sandbox.dev, api.dev, sandbox(prod), api(prod),
 # api.staging, sandbox.staging.
-BOND_ENV = environ.get("BOND_ENV", "sandbox")
+BOND_ENV = environ.get("BOND_ENV", "api.dev")
 
 plaid_host = f"https://{PLAID_ENV}.plaid.com"
 bond_host = f"https://{BOND_ENV}.bond.tech"
