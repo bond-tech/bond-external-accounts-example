@@ -38,7 +38,7 @@ def create_access_token(account_id, payload):
 
     else:
         # Bond
-        endpoint = f"/api/v0/accounts/{linked_account_id}"
+        endpoint = f"/api/v0/accounts/{payload.get('account_id')}"
         url = bond_host + endpoint
 
         headers = {
@@ -222,7 +222,8 @@ def plaid_bond_test(account_id):
           body: JSON.stringify({{
             "public_token": public_token, 
             "metadata": metadata,
-            "linked_account_id": data.linked_account_id
+            "linked_account_id": data.linked_account_id,
+            "account_id": data.account_id
             }})
         }}
         )
